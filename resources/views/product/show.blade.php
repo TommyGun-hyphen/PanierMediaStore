@@ -1,14 +1,20 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app') 
+@section('title',  $product->name.' - ')
+@section('content')
 <link rel="stylesheet" href="/css/splide.min.css" />
 <style>
 #radioBtn .notActive{
     color: #3276b1;
     background-color: #fff;
 }
+#description-content *{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 </style>
 <div class="container">
-    <div class="grid grid-cols-1 md:grid-cols-2 mt-5">
-        <div class="container">
+    <div class="grid grid-cols-1 lg:grid-cols-2 ">
+        <div class="container px-3">
                 <div id="main-slider" class="splide">
                         <div class="splide__track">
                             <ul class="splide__list">
@@ -47,28 +53,28 @@
                     >{{ ($product->price_old)? $product->price_old .' DH' :'' }}</span
                 >
             </h3>
-            <h5 class="h5">Description</h5>
+            <h5 class="h5 my-4">Condition: {{ ($product->used)?'utilisé':'neuf' }}</h5>
+            <h5 class="h5 my-4">Categorie: <a class="underline" href="/category/{{ $product->subCategory()->first()->category()->first()->slug }}">{{ $product->subCategory()->first()->category()->first()->name }}</a></h5>
+            <h5 class="h5 my-4">Description:</h5>
             <div id="description-content" class="prose px-5 py-3 my-3 bg-base-200">
 
             </div>
             <div>
-                @if (!empty($product->extragroups()->get()))
+                @if ($product->extragroups()->get()->first())
                     <h3 class="h3">Extras:</h3>
                 @endif
-                <form action="/test" method="get">
                 @foreach ($product->extragroups()->get() as $extragroup)
                 <div class="input-group my-2">
                     <div id="radioBtn" class="btn-group">
-                        <a class="btn btn-primary btn-sm active" data-toggle="extragroup-{{ $extragroup->id }}" data-title="0">Nom merci</a>
+                        <a class="btn btn-primary btn-sm active" data-toggle="extragroup-{{ $extragroup->id }}" data-title="">Non merci</a>
                         @foreach ($extragroup->extras()->get() as $extra)
-                        <a class="btn btn-primary btn-sm notActive" data-toggle="extragroup-{{ $extragroup->id }}" data-title="{{ $extra->id }}">{{ $extra->name }}</a>
+                        <a class="btn btn-primary btn-sm notActive" data-price="{{ $extra->price }}" data-toggle="extragroup-{{ $extragroup->id }}" data-title="{{ $extra->id }}">{{ $extra->name }}</a>
                         @endforeach
                     </div>
+                    <h5 class="h5 mx-3 extra-price"></h5>
                     <input type="hidden" name="extras[]" class="extra" id="extragroup-{{ $extragroup->id }}">
                 </div>
                 @endforeach
-                <button type="submit">TEST</button>
-            </form>
             </div>
             <div class="custom-number-input h-10 w-32 my-4">
               <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -99,7 +105,11 @@
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
     $('#'+tog).prop('value', sel);
-    
+    if($(this).data('price')){
+        $(this).closest('.input-group').find('.extra-price').text("+ " +$(this).data('price') + " DH" );
+    }else{
+        $(this).closest('.input-group').find('.extra-price').text('');
+    }
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 })
@@ -111,9 +121,12 @@
             rewind: true,
             pagination: false,
             arrows: false,
-            fixedHeight: 500,
+            fixedHeight: 400,
             cover: true,
             breakpoints: {
+                1030:{
+                    fixedHeight: 400
+                },
                 800: {
                     fixedHeight: 250
                 }

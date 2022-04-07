@@ -1,9 +1,14 @@
 @extends('layouts.admin') @section('content')
 <link rel="stylesheet" href="/css/splide.min.css" />
-
+<style>
+    #description-content *{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+</style>
 <div class="container">
     <div class="grid grid-cols-1 md:grid-cols-2 p-5 bg-base-200">
-        <div>
+        <div class="px-3">
             @if($errors->any())
             <div class="alert alert-danger">
                     <ul>
@@ -16,49 +21,105 @@
             <form action="/admin/product/{{ $product->id }}" id="form" name="form" method="post">
                 @method('put')
                 @csrf
-                <input type="text" value="{{ $product->name }}" name="name" placeholder="entrez le nom"
-                    class="input input-bordered input-primary w-full max-w-xs">
-                <div>
-                    <p>**bold text** *italicized text* 	> blockquote </p>
-                    <p># H1 ## H2 ### H3</p>
-                    <p>1. First item | - First item</p>
-                    <p>2. Second item| - Second item</p>
-                    <p>--- horizontal rule</p>
-                </div>
-                <textarea form="form" id="description-textarea" name="description" class="w-100 textarea textarea-primary"
-                    placeholder="description">{{ $product->description }}</textarea>
-
-                <input type="numeric" value="{{ $product->price }}" name="price" placeholder="entrez le prix"
-                    class="input input-bordered input-primary w-full max-w-xs">
-
-                <input type="numeric" value="{{ $product->price_old }}" name="price_old"
-                    placeholder="entrez le prix ancien (facultatif)"
-                    class="input input-bordered input-primary w-full max-w-xs">
-
-                <div class="flex align-items-center my-3">
-                    <img width="100" class="mr-2" src="{{ $product->image_url }}" alt="">
-                    <input type="file" name="image" placeholder="Type here">
-                </div>
+                <button tabindex="-1" type="button" class="btn btn-circle btn-xs btn-neutral" data-bs-toggle="tooltip" data-bs-placement="top" title="Ce champ utilise MarkDown syntax">
+                    ?
+                  </button>
+                <table>
+                    <tr>
+                        <td>
+                            <label>Nom du produit:</label>
+                        </td>
+                        <td>
+                            <input type="text" value="{{ $product->name }}" name="name" placeholder="entrez le nom"
+                            class="input input-bordered input-primary w-full max-w-xs">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>description du produit:</label>
+                        </td>
+                        <td>
+                            <textarea form="form" id="description-textarea" name="description" class="w-full textarea textarea-primary"
+                            placeholder="description">{{ $product->description }}</textarea>
+        
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>prix du produit:</label>
+                        </td>
+                        <td>
+                            <input type="numeric" value="{{ $product->price }}" name="price" placeholder="entrez le prix"
+                            class="input input-bordered input-primary w-full max-w-xs">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>prix ancien du produit:</label>
+                        </td>
+                        <td>
+                            <input type="numeric" value="{{ $product->price_old }}" name="price_old"
+                            placeholder="entrez le prix ancien (facultatif)"
+                            class="input input-bordered input-primary w-full max-w-xs">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>image du produit:</label>
+                        </td>
+                        <td>
+                            <div class="flex align-items-center my-3">
+                                <img width="100" class="mr-2" src="{{ $product->image_url }}" alt="">
+                                <input type="file" name="image" placeholder="Type here">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>categorie:</label>
+                        </td>
+                        <td>
+                            <select name="category" id="category">
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ ( $product->subCategory()->first()->category()->first()->id == $category->id)?'selected':'' }} >{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
+                        <td>
+                            <label>sous-categorie:</label>
+                        </td>
+                        <td>
+                            <select name="sub_category" id="sub_category">
+                            </select>
+                        </td>
+                    </tr>
+                    </tr>
+                        <td>
+                            <label>condition du produit:</label>
+                        </td>
+                        <td>
+                            <label for="is_used">
+                                <input type="checkbox" name="is_used" id="is_used" {{ ($product->is_used == 1)?'checked':'' }}
+                                    class="checkbox checkbox-md">
+                                <span class="label-text">Utilisé</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-primary" type="submit">Modifier les changements</button>
+                        </td>
+                    </tr>
+                </table>
+                
+            
+               
+                
+                
+                
                 {{-- cat --}}
-                <br>
-                <select name="category" id="category">
-                    @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ ( $product->subCategory()->first()->category()->first()->id == $category->id)?'selected':'' }} >{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                <select name="sub_category" id="sub_category">
-
-                </select>
-                <br>
-                <br>
-                <label for="is_used">
-                    <input type="checkbox" name="is_used" id="is_used" {{ ($product->is_used == 1)?'checked':'' }}
-                        class="checkbox checkbox-md">
-                    <span class="label-text">Utilisé</span>
-                </label>
-                <br>
-                <br>
-                <button class="btn btn-primary" type="submit">Modifier les changements</button>
             </form>
         </div>
         <div class="px-1 md:px-5">

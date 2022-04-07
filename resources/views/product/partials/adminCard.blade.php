@@ -12,5 +12,10 @@
             <div class="badge badge-outline">{{ $product->subCategory()->first()->category()->first()->name }}</div>
         </div>
         <a href="/admin/product/{{ $product->slug }}" class="btn btn-sm btn-primary">Modifier</a>
+        <form action="/admin/product/{{ $product->id }}" method="post">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-sm bg-red-600 border-red-600 hover:bg-red-700 w-full">supprimer</button>
+        </form>
     </div>
 </div>

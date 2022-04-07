@@ -1,4 +1,5 @@
 $('.btn-addtocart').on('click', function(){
+  // alert($('.extra').serialize());
     $.ajax({
         url:'/cart',
         method:'POST',

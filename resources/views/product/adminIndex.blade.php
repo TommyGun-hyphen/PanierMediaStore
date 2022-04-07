@@ -46,7 +46,10 @@
                 @include('product.partials.adminCard')
                 @endforeach
             </div>
-            {{ $products->links() }}
+            <div class="flex justify-center">
+                <a href="{{ $products->previousPageUrl() }}" class="btn btn-sm rounded-0 mx-2"><</a>
+                <a href="{{ $products->nextPageUrl() }}" class="btn btn-sm rounded-0 mx-2">></a>
+            </div>
         </div>
     </div>
     <script>

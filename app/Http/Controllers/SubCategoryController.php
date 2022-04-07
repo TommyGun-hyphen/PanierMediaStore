@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Models\Product;
 use App\MyFacades\Facades\Slug;
 class SubCategoryController extends Controller
 {
@@ -43,7 +44,9 @@ class SubCategoryController extends Controller
 
         return response()->json($subcategory, 201);
     }
-    public function show(){
-        dd(Slug::testingFacades());
+    public function show($subcategory_slug){
+        $subcategory = SubCategory::where('slug', $subcategory_slug)->firstOrFail();
+        $products = Product::where('sub_category', $subcategory->id)->get();
+        return view('subcategory.show', compact('products', 'subcategory'));
     }
 }

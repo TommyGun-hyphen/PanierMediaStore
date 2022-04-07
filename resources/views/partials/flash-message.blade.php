@@ -9,6 +9,9 @@
 @if ($message = Session::get('error'))
 <div class="alert alert-danger alert-block">
     <strong>{{ $message }}</strong>
+    @if($link_msg = Session::get('error_link_msg'))
+    <a href="{{ Session::get('error_link') }}">{{ $link_msg }}</a>
+    @endif
 	<button type="button" class="close" data-bs-dismiss="alert">×</button>	
 </div>
 @endif

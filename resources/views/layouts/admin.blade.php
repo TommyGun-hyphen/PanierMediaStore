@@ -37,10 +37,16 @@
                 <li><a href="/admin/category">Categories</a></li>
                 <li><a href="/admin/product">Produits</a></li>
                 <li><a href="/admin/extra">extras</a></li>
-                <li>
+                <li><a href="/admin/order">commandes</a></li>
+                <li><a href="/admin/slider">slider</a></li>
+                <li><a href="/admin/list">listes</a></li>
+                <li><a href="/admin/settings">réglages</a></li>
+
+
+                <li class=" border-l border-slate-900">
                   <form action="/logout" method="post">
                     @csrf
-                    <button type="submit">logout</button>
+                    <button type="submit"><i class="fa-solid fa-arrow-right-from-bracket  mr-2"></i>logout</button>
                   </form>
                 </li>
               </ul>
@@ -59,10 +65,14 @@
             <li><a href="/admin/category">Categories</a></li>
             <li><a href="/admin/product">Produits</a></li>
             <li><a href="/admin/extra">extras</a></li>
+            <li><a href="/admin/order">commandes</a></li>
+            <li><a href="/admin/slider">slider</a></li>
+            <li><a href="/admin/list">listes</a></li>
+            <li><a href="/admin/settings">réglages</a></li>
             <li>
               <form action="/logout" method="post">
                 @csrf
-                <button type="submit">logout</button>
+                <button type="submit"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>logout</button>
               </form>
             </li>
           </ul>

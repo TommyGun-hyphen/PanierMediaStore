@@ -13,6 +13,7 @@ use App\models\Category;
 use App\Models\SubCategory;
 use App\models\ProductImage;
 use App\models\ExtraGroup;
+use App\models\OrderDetail;
 use App\MyFacades\Facades\Slug;
 class ProductController extends Controller
 {
@@ -32,9 +33,10 @@ class ProductController extends Controller
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'price_old' => 'numeric',
+            'price_old' => 'numeric|nullable',
             'sub_category' => 'required|numeric',
         ]);
+        $fileName = 'noImage.jpg';
         if($request->hasFile('image')){
             $image = $request->file('image');
             $fileName = Str::uuid().'.'.$image->getClientOriginalExtension();
@@ -49,20 +51,31 @@ class ProductController extends Controller
         $validated = $request->all();
         $validated["image_url"] = '/images/'.$fileName;
         $validated["slug"] = Slug::createSlug($request->input('name'), Product::class);
+        
         //dd($validated);
         //dd($validated);
-        Product::create($validated);
-        return redirect('/admin/product');
+        $product = Product::create($validated);
+        return redirect('/admin/product/'.$product->slug);
     }
     public function destroy($id){
-        $product_images = ProductImage::where('product_id', $id)->get();
-        $product_images_links = array_map(function($image){
-            return $image->image_url;
-        }, $product_images);
-        $product = Product::find($id);
-        File::delete( $product->image_url, ...$product_images_links);
+        try{
 
         $product->delete();
+        
+        $product_images = ProductImage::where('product_id', $id)->get();
+        $product_images_links = array_map(function($image){
+            return public_path().$image['image_url'];
+        }, $product_images->toArray());
+        $product = Product::find($id);
+        $product_images->delete();
+        File::delete( public_path().$product->image_url, ...$product_images_links);
+
+
+        }catch(\Illuminate\Database\QueryException $ex){
+            return redirect()->back()->with('error', 'ce produit ne peut pas être supprimé. il est utilisé.')
+            ->with('error_link_msg', 'Souhaitez-vous supprimer toutes les choses liées à ce produit ?')
+            ->with('error_link', ' /admin/product/'.$id.'/forceDelete');
+        }
         
         return redirect('/admin/product');
     }
@@ -86,7 +99,7 @@ class ProductController extends Controller
             'name' =>' required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'price_old' => 'numeric',
+            'price_old' => 'numeric|nullable',
             'sub_category' => 'required|numeric',
         ]);
         $allowedfileExtension=['jpeg','jpg','png'];
@@ -136,8 +149,35 @@ class ProductController extends Controller
         return redirect()->back();
     }
     public function destroyImage($image_id){
-        ProductImage::find($image_id)->delete();
+        $image = ProductImage::find($image_id);
+        File::delete( public_path().$image->image_url);
+        $image->delete();
         return response()->json($image_id, 200);
     }
 
+    public function destroyForce($product_id){
+        $product = Product::findOrFail($product_id);
+        OrderDetail::where('product_id', $product_id)->delete();
+
+        $product_images = ProductImage::where('product_id', $product_id);
+        $product_images_links = array_map(function($image){
+            return public_path().$image['image_url'];
+        }, $product_images->get()->toArray());
+        $product_images->delete();
+        File::delete( public_path().$product->image_url, ...$product_images_links);
+
+        $product->delete();
+        return redirect('/admin/product');
+    }
+
+    public function search(Request $request){
+        $words = explode(' ',$request->input('q'));
+        $products = Product::query();
+        foreach($words as $word){
+            $products->orWhere('name', 'LIKE', '%'.$word.'%');
+        }
+        $products = $products->filter()->paginate(15);
+        $categories = Category::all();
+        return view('search', compact('products', 'categories'));
+    }
 }

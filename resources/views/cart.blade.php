@@ -1,4 +1,6 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app') 
+@section('title', 'Panier - ')
+@section('content')
 <div class="container">
 <div class="text-center">
     <h1 class="h1">Panier</h1>
@@ -38,10 +40,17 @@
                                   <div>
                                     <a href="/product/{{ $product->slug }}" class="font-bold block">{{ $product->name }}</a>
                                     <a href="/category/{{ $product->subCategory()->first()->Category()->first()->slug }}" class="text-sm opacity-50 underline">{{ $product->subCategory()->first()->Category()->first()->name }}</a>
+                                    <br>
+                                    <div class="extra-badges">
+                                        @foreach ($product->cart_extras as $extra)
+                                        <div class="extra-badge badge badge-primary">{{ $extra->extraGroup()->first()->name }}: +{{ $extra->name }} | {{ $extra->price }} DH</div>
+                                            <br>
+                                        @endforeach
+                                    </div>
                                   </div>
                                 </div>
                             </td>
-                            <td>{{ $product->price }} DH</td>
+                            <td>{{ $product->total }} DH</td>
                             <td>
                                 <div class="custom-number-input h-10 w-32">
                                   <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -57,7 +66,7 @@
                                 </div>
                                           
                             </td>
-                            <td>{{ $product->price * $product->quantity }} DH</td>
+                            <td>{{ $product->total * $product->quantity }} DH</td>
                         </tr>
                         @empty
                             <tr>
@@ -76,26 +85,51 @@
         </div>
         <div class="">
             <div class="border border-2 border-base-300 p-3">
-                <h2 class="h2">Total Panier</h2>
-                <div class="text-left my-3">
-                    <h5 class="h5 inline">Sous-total</h5>
-                    <span class="float-right text-gray-500">{{ $subtotal }} DH</span>
-                    <hr class="clear-both my-2">
-                    <h5 class="h5 inline">Expedition</h5>
-                    <div class="float-right">
-                        <input type="radio" value="local" name="delivery_method" id="local">
-                        <label for="local">Tanger-Tetouan</label><br>
-                        <span class="text-red-500 float-right">30DH</span>
-                        <br>
-                        <input checked  type="radio" value="national" name="delivery_method" id="national">
-                        <label for="national">Autre villes</label><br>
-                        <span class="text-red-500 float-right">50DH</span>
+                <form action="/order" method="post">
+                    @csrf
+                    <h2 class="h2">Total Panier</h2>
+                    <div class="text-left my-3">
+                        <h5 class="h5 inline">Sous-total</h5>
+                        <span class="float-right text-gray-500">{{ $subtotal }} DH</span>
+                        <hr class="clear-both my-2">
+                        <h5 class="h5 inline">Expedition</h5>
+                        <div class="float-right">
+                            <input type="radio" value="local" name="delivery_method" id="local">
+                            <label for="local">Tanger-Tetouan</label><br>
+                            <span class="text-red-500 float-right">30DH</span>
+                            <br>
+                            <input checked  type="radio" value="national" name="delivery_method" id="national">
+                            <label for="national">Autre villes</label><br>
+                            <span class="text-red-500 float-right">50DH</span>
+                        </div>
+                        <hr class="clear-both  my-2">
+                        <h5 class="h5 inline">Total</h5>
+                        <span class="float-right text-gray-500 text-lg" id="span-total">{{ $subtotal + 50 }} DH</span>
                     </div>
-                    <hr class="clear-both  my-2">
-                    <h5 class="h5 inline">Total</h5>
-                    <span class="float-right text-gray-500 text-lg" id="span-total">{{ $subtotal + 50 }} DH</span>
-                </div>
-                <button class="btn bg-red-600 border-red-600 hover:border-red-700 hover:bg-red-700 rounded-0 clear-both">Valider la commande</button>
+                    <label for="order_modal" class="btn modal-button bg-accent border-accent rounded-0 clear-both">Valider la commande</label>
+                    <input type="checkbox" id="order_modal" class="modal-toggle">
+                    <div class="modal">
+                      <div class="modal-box relative">
+                        <label for="order_modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                        <h3 class="text-lg font-bold mb-4">Informations</h3>
+                        <table class="mx-auto w-full">
+                            <tr>
+                                <td><label for="">Nom Complet:</label></td>
+                                <td><input required type="text" name="fullname" placeholder="entrez votre nom complet..." class="input input-bordered input-primary w-full max-w-xs"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="">telephone:</label></td>
+                                <td><input required type="tel" name="phone" placeholder="entrez votre numero de telephone" class="input input-bordered input-primary w-full max-w-xs"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="">ville:</label></td>
+                                <td><input required type="text" name="city" placeholder="entrez votre ville" class="input input-bordered input-primary w-full max-w-xs"></td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="btn modal-button bg-accent border-accent mt-3 rounded-0">Valider la commande</button>
+                    </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

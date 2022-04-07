@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\SubCategory;
 use App\Models\ProductImage;
 use App\Models\ExtraGroup;
+use App\Models\OrderDetail;
 
 class Product extends Model
 {
@@ -24,7 +25,9 @@ class Product extends Model
         return $this->belongsToMany(ExtraGroup::class);
     }
 
-
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class);
+    }
     //SCOPE
     function scopeFilter($q){
         if(request('price_max') && is_numeric(request('price_max')) && request('price_max') > 0){
