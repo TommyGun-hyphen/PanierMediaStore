@@ -1,8 +1,8 @@
 <div class="bg-black px-5 pt-5 pb-2 text-white text-center">
     @if(App\Models\Setting::where('key', 'logo-type')->first()->value == 'text')
-    <h1 class="h1 text-center uppercase">PanierMedia</h1>
+    <h1 class="h1 text-center uppercase my-5">PanierMedia</h1>
     @else
-        <img src="{{ App\Models\Setting::where('key', 'logo-image')->first()->value }}" class="w-24 mx-auto" alt="PanierMedia ">
+        <img src="{{ App\Models\Setting::where('key', 'logo-image-url')->first()->value }}" class="my-3 w-24 mx-auto" alt="PanierMedia ">
     @endif
     <h4 class=" font-thin uppercase">{{ App\Models\Setting::where('key', 'footer-text')->first()->value }}</h4>
     <table class="mx-auto text-left my-4" cellpadding="10">

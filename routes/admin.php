@@ -50,6 +50,16 @@ Route::get('/settings', function(){
     $settings = App\Models\Setting::all();
     return view('settings', compact('settings'));
 });
+Route::post('/settings/logo', function(Request $request){
+    if($request->hasFile("image")){
+
+        $image = $request->file('image');
+        $img = Intervention\Image\Facades\Image::make($image->getRealPath());
+        $img->save(public_path().'/images/logo.png');
+    }
+
+    return redirect()->back();
+});
 Route::post('/settings', function(Request $request){
     foreach(App\Models\Setting::all() as $setting){
         

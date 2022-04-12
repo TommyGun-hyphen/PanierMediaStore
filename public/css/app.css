@@ -15585,6 +15585,9 @@ body[dir="rtl"] .checkbox:checked,
 .m-5 {
   margin: 1.25rem;
 }
+.m-3 {
+  margin: 0.75rem;
+}
 .my-3 {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
@@ -15620,6 +15623,10 @@ body[dir="rtl"] .checkbox:checked,
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 .mt-1 {
   margin-top: 0.25rem;
@@ -16155,6 +16162,10 @@ body[dir="rtl"] .checkbox:checked,
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+.hover\:border-red-700:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(185 28 28 / var(--tw-border-opacity));
+}
 .hover\:bg-gray-400:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
@@ -16224,6 +16235,10 @@ body[dir="rtl"] .checkbox:checked,
 }
 @media (min-width: 768px) {
 
+  .md\:inline {
+    display: inline;
+  }
+
   .md\:h-24 {
     height: 6rem;
   }
@@ -16256,6 +16271,10 @@ body[dir="rtl"] .checkbox:checked,
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
   .md\:px-5 {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
@@ -16270,6 +16289,10 @@ body[dir="rtl"] .checkbox:checked,
 
   .lg\:block {
     display: block;
+  }
+
+  .lg\:inline {
+    display: inline;
   }
 
   .lg\:flex {

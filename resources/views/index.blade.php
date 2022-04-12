@@ -33,7 +33,7 @@
             <ul class="splide__list">
                 @foreach (App\Models\Product::orderBy('created_at', 'DESC')->limit(9)->get() as $product)
                 <li class="splide__slide">
-                        @include('product.partials.sliderCard')
+                        @include('product.partials.card')
                 </li>
                 @endforeach
 
@@ -49,7 +49,7 @@
             <ul class="splide__list">
                 @foreach ($list->products()->get() as $product)
                 <li class="splide__slide">
-                        @include('product.partials.sliderCard')
+                        @include('product.partials.card')
                 </li>
                 @endforeach
 
@@ -99,13 +99,13 @@
     } ).mount();
 
     new Splide('#news-slider', {
-        perPage: 5,
+        perPage: 4,
         breakpoints: {
             1030: {
-                perPage: 4,
+                perPage: 3,
             },
             770:{
-                perPage:3
+                perPage:2
             },
             600:{
                 perPage:2
@@ -117,10 +117,10 @@
         perPage: 5,
         breakpoints: {
             1030: {
-                perPage: 4,
+                perPage: 3,
             },
             770:{
-                perPage:3
+                perPage:2
             },
             600:{
                 perPage:2

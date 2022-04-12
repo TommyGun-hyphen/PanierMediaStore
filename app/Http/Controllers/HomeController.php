@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Product;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        $top_visited_id = \DB::select('select visitable_id from shetabit_visits where visitable_id = (select visitable_id order by count(visitable_id) desc) limit 5'); 
+        
+        $top_visited_id = array_map(function($e){
+            return $e->visitable_id;
+        }, $top_visited_id);
+        $topVisited = Product::whereIn('id', $top_visited_id)->get();
+        return view('admin.index', compact('topVisited'));
     }
 }

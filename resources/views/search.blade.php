@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-3 col-span-2">
-   
+   <h2 class="h2 text-center">recherche pour: {{ request()->input('q') }}</h2>
     <div>
         <button
             class="btn btn-primary btn-sm rounded-0 ml-5"
@@ -42,7 +42,7 @@
                         />
                     </li>
 
-                    <li class="flex">
+                    <li class="flex flex-col md:flex-row">
                             @foreach($categories as $category)
                             <div class="inline">
                                 <div class="inline">

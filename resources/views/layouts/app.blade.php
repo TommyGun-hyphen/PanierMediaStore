@@ -52,6 +52,7 @@
         </nav> --}}
         @if(request()->user())
             <div style="z-index:5; height:30px" class="bg-zinc-900 text-white w-full position-fixed flex align-items-center">
+              <span class="font-bold py-3 mx-3">PanierMedia</span>
               <a href="/admin" class="hover:text-gray-300 font-bold py-3 mx-3">Dashboard</a>
               @if(isset($category))
               <a href="/admin/category/{{$category->slug}}" class="hover:text-gray-300 font-bold py-3 mx-3">voir categorie</a>
@@ -61,7 +62,7 @@
               @endif
             </div>
             @endif
-        <div style="z-index:5; top:30px" class="py-auto navbar bg-base-100 position-fixed">
+        <div style="z-index:5; @if(request()->user())top:30px @endif" class="py-auto navbar bg-base-100 position-fixed">
             
             <div class="navbar-start">
               <div class="dropdown">
@@ -72,6 +73,7 @@
                 <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                   {{-- mobile --}}
                     <li class="click:bg-base-100">
+                    <form action="/search" method="get">
                       <div class="flex items-center justify-center ">
                         <div class="flex  rounded">
                             <input type="text" class="px-4 py-2 w-2/3" placeholder="Search...">
@@ -80,6 +82,7 @@
                             </button>
                         </div>
                       </div>
+                    </form>
                     </li>
                     @if(App\Models\Setting::where('key', 'show-all-categories')->first()->value == 'true')
                       @foreach(App\Models\Category::all() as $category)
@@ -113,16 +116,19 @@
             <form action="/search" method="get">
               <div class="flex items-center justify-center hidden lg:block ">
                 <div class="flex rounded">
-                    <input type="text" name="q" class="px-4 py-2 w-48" placeholder="Recherche..." autocomplete="off">
-                    <button class=" text-white w-12 bg-gray-600 border-l ">
+                    <input type="text" name="q" class="px-4 py-2 w-48 border rounded-0" placeholder="Recherche..." autocomplete="off">
+                    <button class=" w-12 text-zinc-900 ">
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
               </div>
             </form>
-            <a href="/cart" class="btn btn-neutral mr-5"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="/cart" class="p-3 bg-transparent border-0 text-lg text-zinc-900 hover:text-zinc-700 mr-5"><i class="fa-solid fa-cart-shopping"></i></a>
           </div>
           <div style="height:40px"></div>
+          @if(request()->user())
+          <div style="height:30px"></div>
+          @endif
         <main class="py-4">
             @yield('content')
         </main>

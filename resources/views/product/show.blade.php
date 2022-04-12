@@ -12,7 +12,7 @@
     margin-bottom: 10px;
 }
 </style>
-<div class="container">
+<div class="container my-5">
     <div class="grid grid-cols-1 lg:grid-cols-2 ">
         <div class="container px-3">
                 <div id="main-slider" class="splide">

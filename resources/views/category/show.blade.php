@@ -20,7 +20,7 @@
                     
                     <ul>
                         @foreach($subcategories as $subcategory)
-                        <li class="inline">
+                        <li class="block md:inline">
                             <input
                                 type="checkbox"
                                 name="subcategory[]"

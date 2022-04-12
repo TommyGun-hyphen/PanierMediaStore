@@ -106,7 +106,7 @@
                         <h5 class="h5 inline">Total</h5>
                         <span class="float-right text-gray-500 text-lg" id="span-total">{{ $subtotal + 50 }} DH</span>
                     </div>
-                    <label for="order_modal" class="btn modal-button bg-accent border-accent rounded-0 clear-both">Valider la commande</label>
+                    <label for="order_modal" class="btn modal-button bg-red-600 border-red-600 hover:bg-red-700 hover:border-red-700 rounded-0 clear-both">Valider la commande</label>
                     <input type="checkbox" id="order_modal" class="modal-toggle">
                     <div class="modal">
                       <div class="modal-box relative">
@@ -115,18 +115,18 @@
                         <table class="mx-auto w-full">
                             <tr>
                                 <td><label for="">Nom Complet:</label></td>
-                                <td><input required type="text" name="fullname" placeholder="entrez votre nom complet..." class="input input-bordered input-primary w-full max-w-xs"></td>
+                                <td><input required type="text" name="fullname" placeholder="entrez votre nom complet..." class="input input-bordered  w-full max-w-xs"></td>
                             </tr>
                             <tr>
                                 <td><label for="">telephone:</label></td>
-                                <td><input required type="tel" name="phone" placeholder="entrez votre numero de telephone" class="input input-bordered input-primary w-full max-w-xs"></td>
+                                <td><input required type="tel" name="phone" placeholder="entrez votre numero de telephone" class="input input-bordered  w-full max-w-xs"></td>
                             </tr>
                             <tr>
                                 <td><label for="">ville:</label></td>
-                                <td><input required type="text" name="city" placeholder="entrez votre ville" class="input input-bordered input-primary w-full max-w-xs"></td>
+                                <td><input required type="text" name="city" placeholder="entrez votre ville" class="input input-bordered  w-full max-w-xs"></td>
                             </tr>
                         </table>
-                        <button type="submit" class="btn modal-button bg-accent border-accent mt-3 rounded-0">Valider la commande</button>
+                        <button type="submit" class="btn modal-button bg-red-600 border-red-600 hover:bg-red-700 hover:border-red-700 mt-3 rounded-0">Valider la commande</button>
                     </div>
                     </div>
                 </form>

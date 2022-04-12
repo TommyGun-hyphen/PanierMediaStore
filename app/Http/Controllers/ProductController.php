@@ -90,6 +90,9 @@ class ProductController extends Controller
     }
     public function show($product_slug){
         $product = Product::where('slug', $product_slug)->firstOrFail();
+        if(!request()->user()){
+            visitor()->visit($product);
+        }
         return view('product.show', compact('product'));
     }
 

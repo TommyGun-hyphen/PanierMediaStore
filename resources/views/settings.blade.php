@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <form action="/admin/settings/logo" method="post" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="image"/>
+    <button class="btn btn-primary">Changer le logo</button>
+    </form>
     <form action="/admin/settings" method="post">
         @csrf
     <table class="mx-auto table text-center">

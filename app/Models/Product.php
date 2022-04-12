@@ -13,6 +13,7 @@ use App\Models\OrderDetail;
 class Product extends Model
 {
     use HasFactory;
+    use \Shetabit\Visitor\Traits\Visitable;
     protected $fillable = ['name', 'slug', 'description', 'price', 'price_old', 'sub_category', 'image_url'];
     public function subCategory(){
         return $this->belongsTo(SubCategory::class, 'sub_category');
