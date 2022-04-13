@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $top_visited_id = \DB::select('select visitable_id from shetabit_visits where visitable_id = (select visitable_id order by count(visitable_id) desc) limit 5'); 
+        $top_visited_id = \DB::select('select visitable_id from shetabit_visits where visitable_id in (select visitable_id group by visitable_id order by count(visitable_id) desc) limit 5'); 
         
         $top_visited_id = array_map(function($e){
             return $e->visitable_id;
