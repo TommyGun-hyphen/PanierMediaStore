@@ -8,12 +8,12 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File; 
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use App\models\Product;
-use App\models\Category;
+use App\Models\Product;
+use App\Models\Category;
 use App\Models\SubCategory;
-use App\models\ProductImage;
-use App\models\ExtraGroup;
-use App\models\OrderDetail;
+use App\Models\ProductImage;
+use App\Models\ExtraGroup;
+use App\Models\OrderDetail;
 use App\MyFacades\Facades\Slug;
 class ProductController extends Controller
 {
@@ -46,7 +46,7 @@ class ProductController extends Controller
                 $constraint->aspectRatio();
             });
 
-            $img->save($destination_path .'\\'. $fileName);
+            $img->save($destination_path .'/'. $fileName);
         }
         $validated = $request->all();
         $validated["image_url"] = '/images/'.$fileName;
@@ -59,6 +59,7 @@ class ProductController extends Controller
     }
     public function destroy($id){
         try{
+        $product = Product::findOrFail($id);
 
         $product->delete();
         
@@ -66,8 +67,10 @@ class ProductController extends Controller
         $product_images_links = array_map(function($image){
             return public_path().$image['image_url'];
         }, $product_images->toArray());
-        $product = Product::find($id);
-        $product_images->delete();
+        //$product_images->delete();
+        foreach($product_images as $image){
+            $image->delete();
+        }
         File::delete( public_path().$product->image_url, ...$product_images_links);
 
 
@@ -142,7 +145,7 @@ class ProductController extends Controller
                 $constraint->aspectRatio();
             });
 
-            $img->save($destination_path .'\\'. $fileName);
+            $img->save($destination_path .'/'. $fileName);
             $product_images[] = ProductImage::create([
                 'product_id' => $product_id,
                 'image_url' => '/images/'.$fileName

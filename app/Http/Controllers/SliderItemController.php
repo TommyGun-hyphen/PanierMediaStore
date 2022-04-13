@@ -24,7 +24,7 @@ class SliderItemController extends Controller
             $fileName = Str::uuid().'.'.$image->getClientOriginalExtension();
             $destination_path = public_path('images');
             $img = Image::make($image->getRealPath());
-            $img->save($destination_path .'\\'. $fileName);
+            $img->save($destination_path .'/'. $fileName);
             SliderItem::create([
                 'image_url' => '/images/'.$fileName,
                 'link' => $request->input('link')
